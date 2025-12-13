@@ -1,4 +1,4 @@
-pronosticador-de-futbol
+Pronoticador_Futbol
 
 Proyecto experimental de pronóstico de resultados de fútbol basado en
 probabilidad y física estadística.
