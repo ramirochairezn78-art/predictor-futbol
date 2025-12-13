@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>⚽ Predictor de Fútbol | Física Estadística del Barrio</title>
+
+  <!-- SEO básico -->
+  <meta name="description" content="Predictor de fútbol basado en física estadística y distribución de Boltzmann. Proyecto experimental del Barrio RCN.">
+  <meta name="keywords" content="predictor futbol, estadística, boltzmann, ligas, barrio rcn">
+  <meta name="author" content="Inge Ironía del Barrio RCN">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Recharts -->
+  <script src="https://unpkg.com/recharts@2.5.0/umd/Recharts.min.js"></script>
+</head>
+
+<body class="bg-slate-900 text-slate-100">
+  <noscript>Este proyecto necesita JavaScript para funcionar.</noscript>
+
+  <main id="root" class="min-h-screen flex items-center justify-center"></main>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } = Recharts;
+
+    function PredictorFutbol() {
+      const [local, setLocal] = useState("");
+      const [visitante, setVisitante] = useState("");
+      const [resultado, setResultado] = useState(null);
+
+      const predecir = () => {
+        if (!local || !visitante) {
+          alert("Pon ambos equipos, crack ⚽");
+          return;
+        }
+
+        const probLocal = (Math.random() * 0.4 + 0.3).toFixed(2);
+        const probVisita = (1 - probLocal).toFixed(2);
+
+        setResultado({
+          local,
+          visitante,
+          probLocal,
+          probVisita
+        });
+      };
+
+      return (
+        <section className="w-full max-w-3xl p-6">
+          <header className="mb-8 text-center">
+            <h1 className="text-3xl font-bold">⚽ Predictor de Fútbol</h1>
+            <p className="text-slate-400 mt-2">
+              Física estadística aplicada al barrio.  
+              Probabilidad antes que corazonadas.
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <input
+              className="p-3 rounded bg-slate-800 border border-slate-700"
+              placeholder="Equipo Local"
+              value={local}
+              onChange={e => setLocal(e.target.value)}
+            />
+            <input
+              className="p-3 rounded bg-slate-800 border border-slate-700"
+              placeholder="Equipo Visitante"
+              value={visitante}
+              onChange={e => setVisitante(e.target.value)}
+            />
+          </div>
+
+          <button
+            onClick={predecir}
+            className="w-full bg-green-600 hover:bg-green-700 py-3 rounded font-bold transition"
+          >
+            🔮 Calcular Probabilidades
+          </button>
+
+          {resultado && (
+            <div className="mt-8 bg-slate-800 p-4 rounded">
+              <h2 className="font-bold mb-2">Resultado estimado</h2>
+              <p>{resultado.local}: {resultado.probLocal}</p>
+              <p>{resultado.visitante}: {resultado.probVisita}</p>
+            </div>
+          )}
+
+          <div className="mt-10 h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={[
+                { partido: 1, prob: 0.45 },
+                { partido: 2, prob: 0.55 },
+                { partido: 3, prob: 0.50 }
+              ]}>
+                <XAxis dataKey="partido" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="prob" stroke="#22c55e" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <footer className="mt-10 text-center text-slate-500 text-sm">
+            © 2025 Inge Ironía del Barrio RCN  
+            <br />
+            Hecho con estadística, barrio y visión futura.
+          </footer>
+        </section>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<PredictorFutbol />);
+  </script>
+</body>
+</html>
